@@ -1,24 +1,31 @@
 #include "pch.h"
 #include "Game.h"
 #include "Engine.h"
+#include "Material.h"
 
-shared_ptr<Mesh> mesh = make_shared<Mesh>();
-shared_ptr<Shader> shader = make_shared<Shader>();
+#include "GameObject.h"
+#include "MeshRenderer.h"
+
+shared_ptr<GameObject> gameObject = make_shared<GameObject>();
+
 
 void Game::Init(const WindowInfo& info)
 {
 	GEngine->Init(info);
 
-
 	vector<Vertex> vec(4);
 	vec[0].pos = Vec3(-0.5f, 0.5f, 0.5f);
 	vec[0].color = Vec4(1.f, 0.f, 0.f, 1.f);
+	vec[0].uv = Vec2(0.f, 0.f);
 	vec[1].pos = Vec3(0.5f, 0.5f, 0.5f);
 	vec[1].color = Vec4(0.f, 1.f, 0.f, 1.f);
+	vec[1].uv = Vec2(1.f, 0.f);
 	vec[2].pos = Vec3(0.5f, -0.5f, 0.5f);
 	vec[2].color = Vec4(0.f, 0.f, 1.f, 1.f);
+	vec[2].uv = Vec2(1.f, 1.f);
 	vec[3].pos = Vec3(-0.5f, -0.5f, 0.5f);
 	vec[3].color = Vec4(0.f, 1.f, 0.f, 1.f);
+	vec[3].uv = Vec2(0.f, 1.f);
 
 	vector<uint32> indexVec;
 	{
@@ -27,32 +34,52 @@ void Game::Init(const WindowInfo& info)
 		indexVec.push_back(2);
 	}
 	{
+		indexVec.push_back(0);
 		indexVec.push_back(2);
 		indexVec.push_back(3);
-		indexVec.push_back(0);
 	}
 
-	mesh->Init(vec, indexVec);
+	// 오늘 테스트 부분
+	gameObject->Init(); // transform 추가
 
-	// 나중에는 Resources의 경로를 설정값으로 전달하도록 변경 (하드코딩 피하기 위해)
-	shader->Init(L"..\\Resources\\Shader\\default.hlsli");
-	// 동기화 안 되었을 때 기다려주기
+	shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+
+	{
+		shared_ptr<Mesh> mesh = make_shared<Mesh>();
+		mesh->Init(vec, indexVec);
+		meshRenderer->SetMesh(mesh);
+	}
+
+	{
+		shared_ptr<Mesh> mesh = make_shared<Mesh>();
+		mesh->Init(vec, indexVec);
+
+		shared_ptr<Shader> shader = make_shared<Shader>();
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		shader->Init(L"..\\Resources\\Shader\\default.hlsli");
+		texture->Init(L"..\\Resources\\Texture\\veigar.jpg");
+
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetFloat(0, 0.1f);
+		material->SetFloat(1, 0.2f);
+		material->SetFloat(2, 0.3f);
+		material->SetTexture(0, texture);
+		meshRenderer->SetMaterial(material);
+	}
+
+	gameObject->AddComponent(meshRenderer);
+
 	GEngine->GetCmdQueue()->WaitSync();
 }
 
 void Game::Update()
 {
+	GEngine->Update();
+
 	GEngine->RenderBegin();
 
-	shader->Update();
-	
-	{
-		Transform t;
-		t.offset = Vec4(0.f, 0.f, 0.f, 0.f);
-		mesh->SetTransform(t);
-
-		mesh->Render();
-	}
+	gameObject->Update();
 
 
 	GEngine->RenderEnd();
