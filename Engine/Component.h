@@ -4,6 +4,7 @@ enum class COMPONENT_TYPE : uint8
 {
 	TRANSFORM,
 	MESH_RENDERER,
+	CAMERA,
 	// ... component 추가 시 마다 추가
 	MONO_BEHAVIOUR,
 	END,
@@ -30,6 +31,7 @@ public:
 	virtual void Start() { }
 	virtual void Update() { }
 	virtual void LateUpdate() { } // update 다음 마지막 update
+	virtual void FinalUpdate() { }	
 
 public:
 	// type 확인
