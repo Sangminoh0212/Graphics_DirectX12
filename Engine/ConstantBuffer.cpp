@@ -87,7 +87,7 @@ void ConstantBuffer::Clear()
 }
 
 // 내가 넣어준 위치의 handle을 반환
-void ConstantBuffer::PushData(void* buffer, uint32 size)
+void ConstantBuffer::PushGraphicsData(void* buffer, uint32 size)
 {
 	assert(_currentIndex < _elementCount);
 	assert(_elementSize == ((size + 255) & ~255));
@@ -96,9 +96,29 @@ void ConstantBuffer::PushData(void* buffer, uint32 size)
 
 	D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = GetCpuHandle(_currentIndex);
 
-	GEngine->GetTableDescHeap()->SetCBV(cpuHandle, _reg);
+	GEngine->GetGraphicsDescHeap()->SetCBV(cpuHandle, _reg);
 
 	_currentIndex++;
+}
+
+void ConstantBuffer::PushComputeData(void* buffer, uint32 size)
+{
+	assert(_currentIndex < _elementCount);
+	assert(_elementSize == ((size + 255) & ~255));
+
+	::memcpy(&_mappedBuffer[_currentIndex * _elementSize], buffer, size);
+
+	D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = GetCpuHandle(_currentIndex);
+	GEngine->GetComputeDescHeap()->SetCBV(cpuHandle, _reg);
+
+	_currentIndex++;
+}
+
+void ConstantBuffer::SetGraphicsGlobalData(void* buffer, uint32 size)
+{
+	assert(_elementSize == ((size + 255) & ~255));
+	::memcpy(&_mappedBuffer[0], buffer, size);
+	GRAPHICS_CMD_LIST->SetGraphicsRootConstantBufferView(0, GetGpuVirtualAddress(0));
 }
 
 D3D12_GPU_VIRTUAL_ADDRESS ConstantBuffer::GetGpuVirtualAddress(uint32 index)

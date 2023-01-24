@@ -4,23 +4,26 @@
     <Filter Include="Engine">
       <UniqueIdentifier>{4cb67245-256d-486f-88d3-c1b36fa8bda5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource">
-      <UniqueIdentifier>{1537da06-771e-4316-a73a-73ce78b34272}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{13034c0e-2a5d-47da-9a9d-c004f9a0afa4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shader">
       <UniqueIdentifier>{d8f235bb-6e0f-4a59-b846-a030d1eff38c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject">
-      <UniqueIdentifier>{eebebce1-21be-43af-b636-da649a87e696}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Manager">
       <UniqueIdentifier>{f2cb057b-a8b9-47dd-b418-2bbae8118e94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Test">
+    <Filter Include="Object">
+      <UniqueIdentifier>{eebebce1-21be-43af-b636-da649a87e696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Test">
       <UniqueIdentifier>{b2de3127-72c2-4ed9-a5da-d601a3154124}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component">
+      <UniqueIdentifier>{1e8e99f5-0fbf-4fcd-bf53-1c91c28397ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Resource">
+      <UniqueIdentifier>{1537da06-771e-4316-a73a-73ce78b34272}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,10 +49,10 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Resource</Filter>
+      <Filter>Object\Resource</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>Resource</Filter>
+      <Filter>Object\Resource</Filter>
     </ClCompile>
     <ClCompile Include="ConstantBuffer.cpp">
       <Filter>Engine</Filter>
@@ -58,28 +61,13 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="DepthStencilBuffer.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Object\Resource</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
-      <Filter>Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>GameObject</Filter>
+      <Filter>Object\Resource</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshRenderer.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="MonoBehaviour.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>GameObject</Filter>
+      <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Manager</Filter>
@@ -96,11 +84,38 @@
     <ClCompile Include="SimpleMath.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="TestCameraScript.cpp">
-      <Filter>GameObject\Test</Filter>
+      <Filter>Object\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="MonoBehaviour.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTargetGroup.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -129,10 +144,10 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Resource</Filter>
+      <Filter>Object\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Resource</Filter>
+      <Filter>Object\Resource</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBuffer.h">
       <Filter>Engine</Filter>
@@ -141,28 +156,13 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="DepthStencilBuffer.h">
-      <Filter>Engine</Filter>
+      <Filter>Object\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>GameObject</Filter>
+      <Filter>Object\Resource</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshRenderer.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="MonoBehaviour.h">
-      <Filter>GameObject</Filter>
+      <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Manager</Filter>
@@ -179,19 +179,66 @@
     <ClInclude Include="SimpleMath.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="TestCameraScript.h">
-      <Filter>GameObject\Test</Filter>
+      <Filter>Object\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="MonoBehaviour.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTargetGroup.h">
+      <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\Shader\default.hlsli">
-      <Filter>Shader</Filter>
-    </None>
     <None Include="SimpleMath.inl">
       <Filter>Utils</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Resources\Shader\forward.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\params.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\skybox.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\utils.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\deferred.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\lighting.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\compute.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -76,9 +76,26 @@ enum class SRV_REGISTER : uint8
 	t2,
 	t3,
 	t4,
+	t5,
+	t6,
+	t7,
+	t8,
+	t9,
 
 	END // END = 몇개 가지고 있는 지 나타냄
 };
+
+enum class UAV_REGISTER : uint8
+{
+	u0 = static_cast<uint8>(SRV_REGISTER::END),
+	u1,
+	u2,
+	u3,
+	u4,
+
+	END,
+};
+
 
 // SRV t0 시작 위치 = CBV 끝나는 END에서 시작 
 enum
@@ -86,7 +103,9 @@ enum
 	SWAP_CHAIN_BUFFER_COUNT = 2,
 	CBV_REGISTER_COUNT = CBV_REGISTER::END,
 	SRV_REGISTER_COUNT = static_cast<uint8>(SRV_REGISTER::END) - CBV_REGISTER_COUNT,
-	REGISTER_COUNT = CBV_REGISTER_COUNT + SRV_REGISTER_COUNT
+	CBV_SRV_REGISTER_COUNT = CBV_REGISTER_COUNT + SRV_REGISTER_COUNT,
+	UAV_REGISTER_COUNT = static_cast<uint8>(UAV_REGISTER::END) - CBV_SRV_REGISTER_COUNT,
+	TOTAL_REGISTER_COUNT = CBV_SRV_REGISTER_COUNT + UAV_REGISTER_COUNT
 };
 
 struct WindowInfo
@@ -99,9 +118,17 @@ struct WindowInfo
 
 struct Vertex
 {
+	Vertex() {}
+
+	Vertex(Vec3 p, Vec2 u, Vec3 n, Vec3 t)
+		: pos(p), uv(u), normal(n), tangent(t)
+	{
+	}
+
 	Vec3 pos; // x,y,z
-	Vec4 color; // r,g,b,a
 	Vec2 uv;
+	Vec3 normal;
+	Vec3 tangent;
 };
 
 #define DECLARE_SINGLE(type)	\
@@ -119,9 +146,14 @@ public:							\
 
 
 #define DEVICE				GEngine->GetDevice()->GetDevice()
-#define CMD_LIST			GEngine->GetCmdQueue()->GetCmdList()
-#define ROOT_SIGNATURE		GEngine->GetRootSignature()->GetSignature()
-#define RESOURCE_CMD_LIST	GEngine->GetCmdQueue()->GetResourceCmdList()
+#define GRAPHICS_CMD_LIST	GEngine->GetGraphicsCmdQueue()->GetGraphicsCmdList()
+
+#define GRAPHICS_ROOT_SIGNATURE		GEngine->GetRootSignature()->GetGraphicsRootSignature()
+#define COMPUTE_ROOT_SIGNATURE		GEngine->GetRootSignature()->GetComputeRootSignature()
+
+
+#define RESOURCE_CMD_LIST	GEngine->GetGraphicsCmdQueue()->GetResourceCmdList()
+#define COMPUTE_CMD_LIST	GEngine->GetComputeCmdQueue()->GetGraphicsComputeCmdList()
 
 #define INPUT				GET_SINGLE(Input)
 #define DELTA_TIME			GET_SINGLE(Timer)->GetDeltaTime()
@@ -131,6 +163,10 @@ public:							\
 // 임시로 생성
 struct TransformParams
 {
+	Matrix matWorld;
+	Matrix matView;
+	Matrix matProjection;
+	Matrix matWV;
 	Matrix matWVP;
 };
 

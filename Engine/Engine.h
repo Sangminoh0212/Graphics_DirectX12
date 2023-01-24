@@ -9,8 +9,7 @@
 #include "ConstantBuffer.h"
 #include "TableDescriptorHeap.h"
 #include "Texture.h"
-#include "DepthStencilBuffer.h"
-
+#include "RenderTargetGroup.h"
 
 class Engine
 {
@@ -20,13 +19,15 @@ public:
 public:
 	const WindowInfo& GetWindow() { return _window; }
 	shared_ptr<Device> GetDevice() { return _device; }
-	shared_ptr<CommandQueue> GetCmdQueue() { return _cmdQueue; }
+	shared_ptr<GraphicsCommandQueue> GetGraphicsCmdQueue() { return _graphicsCmdQueue; }
+	shared_ptr<ComputeCommandQueue> GetComputeCmdQueue() { return _computeCmdQueue; }
 	shared_ptr<SwapChain> GetSwapChain() { return _swapChain; }
 	shared_ptr<RootSignature> GetRootSignature() { return _rootSignature; }
-	shared_ptr<TableDescriptorHeap> GetTableDescHeap() { return _tableDescHeap; }
-	shared_ptr<DepthStencilBuffer> GetDepthStencilBuffer() { return _depthStencilBuffer; }
+	shared_ptr<GraphicsDescriptorHeap> GetGraphicsDescHeap() { return _graphicsDescHeap; }
+	shared_ptr<ComputeDescriptorHeap> GetComputeDescHeap() { return _computeDescHeap; }
 
 	shared_ptr<ConstantBuffer> GetConstantBuffer(CONSTANT_BUFFER_TYPE type) { return _constantBuffers[static_cast<uint8>(type)]; }
+	shared_ptr<RenderTargetGroup> GetRTGroup(RENDER_TARGET_GROUP_TYPE type) { return _rtGroups[static_cast<uint8>(type)]; }
 
 public:
 	void Render();
@@ -37,7 +38,7 @@ public:
 private:
 	void ShowFps();
 	void CreateConstantBuffer(CBV_REGISTER reg, uint32 bufferSize, uint32 count);
-
+	void CreateRenderTargetGroups();
 private:
 	// 그려질 화면 크기 관련
 	WindowInfo _window;
@@ -46,13 +47,15 @@ private:
 
 	// 초기화 하는데 필요한 class
 	shared_ptr<Device> _device = make_shared<Device>();
-	shared_ptr<CommandQueue> _cmdQueue = make_shared<CommandQueue>();
+	shared_ptr<GraphicsCommandQueue> _graphicsCmdQueue = make_shared<GraphicsCommandQueue>();
+	shared_ptr<ComputeCommandQueue> _computeCmdQueue = make_shared<ComputeCommandQueue>();
 	shared_ptr<SwapChain> _swapChain = make_shared<SwapChain>();
 	shared_ptr<RootSignature> _rootSignature = make_shared<RootSignature>();
 	shared_ptr<ConstantBuffer> _cb = make_shared<ConstantBuffer>();
-	shared_ptr<TableDescriptorHeap> _tableDescHeap = make_shared<TableDescriptorHeap>();
-	shared_ptr<DepthStencilBuffer> _depthStencilBuffer = make_shared<DepthStencilBuffer>();
+	shared_ptr<GraphicsDescriptorHeap> _graphicsDescHeap = make_shared<GraphicsDescriptorHeap>();
+	shared_ptr<ComputeDescriptorHeap> _computeDescHeap = make_shared<ComputeDescriptorHeap>();
 
 	vector<shared_ptr<ConstantBuffer>> _constantBuffers;
+	array<shared_ptr<RenderTargetGroup>, RENDER_TARGET_GROUP_COUNT> _rtGroups;
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 enum class CONSTANT_BUFFER_TYPE : uint8
 {
+	GLOBAL,
 	TRANSFORM,
 	MATERIAL,
 	END
@@ -20,7 +21,10 @@ public:
 	void Init(CBV_REGISTER reg, uint32 size, uint32 count);
 
 	void Clear();
-	void PushData(void* buffer, uint32 size);
+	void PushGraphicsData(void* buffer, uint32 size);
+	void SetGraphicsGlobalData(void* buffer, uint32 size);
+	void PushComputeData(void* buffer, uint32 size);
+
 
 	D3D12_GPU_VIRTUAL_ADDRESS GetGpuVirtualAddress(uint32 index);
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCpuHandle(uint32 index);
