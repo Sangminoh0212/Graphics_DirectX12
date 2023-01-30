@@ -1,4 +1,5 @@
 #pragma once
+
 class Scene;
 
 enum
@@ -9,7 +10,6 @@ enum
 class SceneManager
 {
 	DECLARE_SINGLE(SceneManager);
-	 
 
 public:
 	void Update();
@@ -19,10 +19,15 @@ public:
 	void SetLayerName(uint8 index, const wstring& name);
 	const wstring& IndexToLayerName(uint8 index) { return _layerNames[index]; }
 	uint8 LayerNameToIndex(const wstring& name);
+
+	shared_ptr<class GameObject> Pick(int32 screenX, int32 screenY);
+
 public:
 	shared_ptr<Scene> GetActiveScene() { return _activeScene; }
+
 private:
 	shared_ptr<Scene> LoadTestScene();
+
 private:
 	shared_ptr<Scene> _activeScene;
 

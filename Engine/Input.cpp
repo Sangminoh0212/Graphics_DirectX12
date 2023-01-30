@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Input.h"
-
+#include "Engine.h"
 
 void Input::Init(HWND hwnd)
 {
@@ -20,7 +20,6 @@ void Input::Update()
 	}
 
 	BYTE asciiKeys[KEY_TYPE_COUNT] = {};
-	// 256개byte array를 넣어 각 virtual key의 state를 넣어온다.
 	if (::GetKeyboardState(asciiKeys) == false)
 		return;
 
@@ -48,4 +47,7 @@ void Input::Update()
 				state = KEY_STATE::NONE;
 		}
 	}
+
+	::GetCursorPos(&_mousePos);
+	::ScreenToClient(GEngine->GetWindow().hwnd, &_mousePos);
 }

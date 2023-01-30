@@ -9,6 +9,7 @@ enum class COMPONENT_TYPE : uint8
 	LIGHT,
 	PARTICLE_SYSTEM,
 	TERRAIN,
+	COLLIDER,
 	// ... component 추가 시 마다 추가
 	MONO_BEHAVIOUR,
 	END,
