@@ -2,18 +2,19 @@
 #include "Material.h"
 #include "Engine.h"
 
-Material::Material() :Object(OBJECT_TYPE::MATERIAL)
+Material::Material() : Object(OBJECT_TYPE::MATERIAL)
 {
+
 }
 
 Material::~Material()
 {
+
 }
 
 void Material::PushGraphicsData()
 {
 	// CBV 업로드
-	// material과 관련된 constant buffer를 불러와서 데이터 push
 	CONST_BUFFER(CONSTANT_BUFFER_TYPE::MATERIAL)->PushGraphicsData(&_params, sizeof(_params));
 
 	// SRV 업로드
@@ -29,6 +30,7 @@ void Material::PushGraphicsData()
 	// 파이프라인 세팅
 	_shader->Update();
 }
+
 void Material::PushComputeData()
 {
 	// CBV 업로드
@@ -59,4 +61,15 @@ void Material::Dispatch(uint32 x, uint32 y, uint32 z)
 	COMPUTE_CMD_LIST->Dispatch(x, y, z);
 
 	GEngine->GetComputeCmdQueue()->FlushComputeCommandQueue();
+}
+
+shared_ptr<Material> Material::Clone()
+{
+	shared_ptr<Material> material = make_shared<Material>();
+
+	material->SetShader(_shader);
+	material->_params = _params;
+	material->_textures = _textures;
+
+	return material;
 }

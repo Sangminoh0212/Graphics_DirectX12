@@ -14,7 +14,7 @@ public:
 	void Init(ComPtr<ID3D12Device> device, shared_ptr<SwapChain> swapChain);
 	void WaitSync(); // fence를 이용해서 대기
 
-	void RenderBegin(const D3D12_VIEWPORT* vp, const D3D12_RECT* rect);
+	void RenderBegin();
 	void RenderEnd();
 
 	void FlushResourceCommandQueue();
@@ -60,7 +60,7 @@ public:
 	void FlushComputeCommandQueue();
 
 	ComPtr<ID3D12CommandQueue> GetCmdQueue() { return _cmdQueue; }
-	ComPtr<ID3D12GraphicsCommandList> GetGraphicsComputeCmdList() { return _cmdList; }
+	ComPtr<ID3D12GraphicsCommandList> GetComputeCmdList() { return _cmdList; }
 
 private:
 	ComPtr<ID3D12CommandQueue>			_cmdQueue;

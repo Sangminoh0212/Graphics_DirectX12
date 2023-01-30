@@ -7,6 +7,8 @@ class MeshRenderer;
 class Camera;
 class Light;
 class MonoBehaviour;
+class ParticleSystem;
+class Terrain;
 
 class GameObject : public Object, public enable_shared_from_this<GameObject>
 {
@@ -20,12 +22,14 @@ public:
 	void LateUpdate();
 	void FinalUpdate();
 
-	shared_ptr<Component> GetFixedComponent(COMPONENT_TYPE);
+	shared_ptr<Component> GetFixedComponent(COMPONENT_TYPE type);
 
 	shared_ptr<Transform> GetTransform();
 	shared_ptr<MeshRenderer> GetMeshRenderer();
 	shared_ptr<Camera> GetCamera();
 	shared_ptr<Light> GetLight();
+	shared_ptr<ParticleSystem> GetParticleSystem();
+	shared_ptr<Terrain> GetTerrain();
 
 	void AddComponent(shared_ptr<Component> component);
 
@@ -35,17 +39,15 @@ public:
 	void SetLayerIndex(uint8 layer) { _layerIndex = layer; }
 	uint8 GetLayerIndex() { return _layerIndex; }
 
+	void SetStatic(bool flag) { _static = flag; }
+	bool IsStatic() { return _static; }
 
 private:
-	// 멤버 변수 선언
-	
-	// 일반적인 component는 array로 선언.
-	// 고정적으로 사용할 component
 	array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;
-	// Monobehavior을 이용하여 custom으로 만들 component는 따로 관리
 	vector<shared_ptr<MonoBehaviour>> _scripts;
 
 	bool _checkFrustum = true;
 	uint8 _layerIndex = 0;
+	bool _static = true;
 };
 

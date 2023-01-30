@@ -153,7 +153,7 @@ public:							\
 
 
 #define RESOURCE_CMD_LIST	GEngine->GetGraphicsCmdQueue()->GetResourceCmdList()
-#define COMPUTE_CMD_LIST	GEngine->GetComputeCmdQueue()->GetGraphicsComputeCmdList()
+#define COMPUTE_CMD_LIST	GEngine->GetComputeCmdQueue()->GetComputeCmdList()
 
 #define INPUT				GET_SINGLE(Input)
 #define DELTA_TIME			GET_SINGLE(Timer)->GetDeltaTime()
@@ -168,6 +168,7 @@ struct TransformParams
 	Matrix matProjection;
 	Matrix matWV;
 	Matrix matWVP;
+	Matrix matViewInv;
 };
 
 // 나중에 GEngine이 등장할것임을 선포 & Engine 전방선언
